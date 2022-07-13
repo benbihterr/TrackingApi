@@ -27,6 +27,15 @@ namespace TrackingApi.Controllers
             return issue == null ? NotFound() : Ok(issue);
         }
 
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<IActionResult> Create(Issue issue)
+        {
+            await _context.Issues.AddAsync(issue);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetById), new {id = issue.Id}, issue);
+        }
 
     }
 }
