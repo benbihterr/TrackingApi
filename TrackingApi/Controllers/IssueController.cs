@@ -52,7 +52,19 @@ namespace TrackingApi.Controllers
         }
 
 
-        
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var issueToDelete = await _context.Issues.FindAsync(id);
+            if (issueToDelete == null) return NotFound();
+
+            _context.Issues.Remove(issueToDelete);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 
 }
